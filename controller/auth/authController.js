@@ -1,6 +1,7 @@
 const User = require("../../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../../services/sendEmail");
 
 
 exports.registerUser= async (req, res) => {
@@ -72,4 +73,49 @@ exports.loginUser=async (req, res) => {
       message: "Invalid email and password",
     });
   }
+}
+
+
+exports.forgetpassword=async(req,res)=>{
+const {email}=req.body
+if(!email){
+    return res.status(400).json({
+        message:"Please provide email"
+    })
+}
+//check if email exist or not 
+const userExist=await User.find({userEmail:email})
+if(userExist.length==0){
+return res.status(404).json({
+    message:"Email is not registered"
+})
+}
+
+
+//send otp to that email
+
+const otp=Math.floor(Math.random()*9000)
+userExist[0].userOTP=otp
+await userExist[0].save()
+await sendEmail({
+    email:email,
+    subject:"Your OTP For MMA E-Commerce Forgot Password",
+    message:`Your forget password otp is ${otp}.Dont share with anyone !!`
+})
+res.status(200).json({
+    message:'OTP sent successfully!!'
+})
+}
+
+
+
+exports.verifyOTP=async(req,res)=>{
+    const {otp}=req.body
+    if(!otp){
+        return res.status(400).json({
+message:"Please enter your otp"
+        })
+    }
+    const verifyOtp=await User.find({userOTP:otp})
+
 }
