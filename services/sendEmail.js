@@ -10,7 +10,7 @@ var transporter=nodemailer.createTransport({
 })
 
 const mailOptions={
-    from:`Sanjil Shakya <${process.env.EMAIL_USER}>`,
+    from:`MMA DROP ZONE <${process.env.EMAIL_USER}>`,
     to:options.email,
     subject:options.subject,
     text:options.message

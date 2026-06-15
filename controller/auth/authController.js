@@ -94,7 +94,7 @@ return res.status(404).json({
 
 //send otp to that email
 
-const otp=Math.floor(Math.random()*9000)
+const otp=Math.floor(1000+ Math.random()*9000)
 userExist[0].userOTP=otp
 await userExist[0].save()
 await sendEmail({
@@ -110,12 +110,58 @@ res.status(200).json({
 
 
 exports.verifyOTP=async(req,res)=>{
-    const {otp}=req.body
-    if(!otp){
+    const {email,otp}=req.body
+    if(!email || !otp){
         return res.status(400).json({
-message:"Please enter your otp"
+message:"Please provide email and otp"
         })
     }
-    const verifyOtp=await User.find({userOTP:otp})
+//check that otp correct or not of that email
 
+const userExists=await User.find({userEmail:email})
+if(userExists.length==0){
+    return res.status(404).json({
+        message:"Email is not registered"
+    })
+}
+if(userExists[0].userOTP != otp){
+    res.status(400).json({
+        message:"Invalid otp"
+    })
+}
+
+else{
+    userExists[0].otp=undefined
+    userExists[0].save()
+    res.status(200).json({
+        message:"OTP is correct !!"
+    })
+}
+
+}
+
+
+exports.resetPassword=async(req,res)=>{
+    const {email,newPassword,confirmPassword}=req.body
+    if(!email || !newPassword || !confirmPassword){
+        return res.status(400).json({
+            message:"Please provide email,newPasswprd,confirmPassword"
+        })
+    }
+    if(newPassword !== confirmPassword){
+        return res.status(400).json({
+            message:"newPassword and confirmPassword doesnt match !!"
+        })
+    }
+const userExists=await User.find({userEmail:email})
+if(userExists.length==0){
+    return res.status(404).json({
+        message:"Email is not registered"
+    })
+}
+userExists[0].userPassword=bcrypt.hashSync(newPassword,10)
+await userExists[0].save()
+res.status(200).json({
+    message:"Password changed successfully !!"
+})
 }
