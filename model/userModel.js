@@ -27,6 +27,10 @@ const userSchema=new Schema({
     },
     userOTP:{
         type:Number
+    },
+    isOtpVerified:{
+        type:Boolean,
+        default:false
     }
 },{
     timestamps:true

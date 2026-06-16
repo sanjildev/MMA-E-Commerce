@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { sendEmail } = require("../../services/sendEmail");
 
 
+//register user
 exports.registerUser= async (req, res) => {
   const { email, password, phoneNumber, username } = req.body;
   if (!email || !password || !phoneNumber || !username) {
@@ -36,7 +37,6 @@ exports.registerUser= async (req, res) => {
 
 
 //login user api
-
 
 exports.loginUser=async (req, res) => {
   const { email, password } = req.body;
@@ -76,6 +76,9 @@ exports.loginUser=async (req, res) => {
 }
 
 
+
+//forgot password
+
 exports.forgetpassword=async(req,res)=>{
 const {email}=req.body
 if(!email){
@@ -108,6 +111,7 @@ res.status(200).json({
 }
 
 
+//verify otp
 
 exports.verifyOTP=async(req,res)=>{
     const {email,otp}=req.body
@@ -132,6 +136,7 @@ if(userExists[0].userOTP != otp){
 
 else{
     userExists[0].otp=undefined
+     userExists[0].isOtpVerified=true
     userExists[0].save()
     res.status(200).json({
         message:"OTP is correct !!"
@@ -140,6 +145,9 @@ else{
 
 }
 
+
+
+//reset passwrord
 
 exports.resetPassword=async(req,res)=>{
     const {email,newPassword,confirmPassword}=req.body
@@ -158,6 +166,11 @@ if(userExists.length==0){
     return res.status(404).json({
         message:"Email is not registered"
     })
+}
+if(userExists[0].isOtpVerified !==true){
+  return res.status(403).json({
+    message:"you cannot perform this action"
+  })
 }
 userExists[0].userPassword=bcrypt.hashSync(newPassword,10)
 await userExists[0].save()
