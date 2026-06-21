@@ -21,6 +21,9 @@ const productSchema=new Schema({
     productStockQty:{
         type:Number,
         required:[true,"Product quantity is required"]
+    },
+    productImage:{
+        type:String
     }
 },{
     timestamps:true
