@@ -173,6 +173,7 @@ if(userExists[0].isOtpVerified !==true){
   })
 }
 userExists[0].userPassword=bcrypt.hashSync(newPassword,10)
+userExists[0].isOtpVerified = false;
 await userExists[0].save()
 res.status(200).json({
     message:"Password changed successfully !!"
