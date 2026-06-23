@@ -5,6 +5,8 @@ const { connectToDatabase } = require("./database/database");
 const { registerUser, loginUser } = require("./controller/auth/authController");
 const authRoute= require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
+const adminUserRoute = require("./routes/adminUsersRoute");
+
 
 //tell node to use dotenv
 env.config();
@@ -27,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use('/api',authRoute)
 app.use('/api',productRoute)
+app.use('/api',adminUserRoute)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

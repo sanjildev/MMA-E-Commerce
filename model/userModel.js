@@ -10,7 +10,7 @@ const userSchema=new Schema({
     },
     userPhoneNumber:{
         type:Number,
-        required:[true,"Phone Number must be provided"]
+        required:[true,"Phone Number must be provided"],
     },
     userName:{
         type:String,
@@ -18,19 +18,22 @@ const userSchema=new Schema({
     },
     userPassword:{
         type:String,
-        required:[true,"Password must be provided"]
+        required:[true,"Password must be provided"],
+        select:false
     },
     role:{
         type:String,
         enum:["customer","admin"],
-        default:"customer"
+        default:"customer",
     },
     userOTP:{
-        type:Number
+        type:Number,
+        select:false
     },
     isOtpVerified:{
         type:Boolean,
-        default:false
+        default:false,
+        select:false
     }
 },{
     timestamps:true
