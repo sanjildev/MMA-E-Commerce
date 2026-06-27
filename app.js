@@ -3,12 +3,11 @@ const app = express();
 const env = require("dotenv");
 const { connectToDatabase } = require("./database/database");
 const { registerUser, loginUser } = require("./controller/auth/authController");
-const authRoute= require("./routes/authRoute");
-const productRoute = require("./routes/productRoute");
-const adminUserRoute = require("./routes/adminUsersRoute");
-const userReviewRoute = require("./routes/userReviewRoute");
-
-
+const authRoute= require("./routes/auth/authRoute");
+const productRoute = require("./routes/admin/productRoute");
+const adminUserRoute = require("./routes/admin/adminUsersRoute");
+const userReviewRoute = require("./routes/user/userReviewRoute");
+const profileRoute = require("./routes/user/profileRoute");
 //tell node to use dotenv
 env.config();
 
@@ -28,10 +27,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use('/api',authRoute)
-app.use('/api',productRoute)
-app.use('/api',adminUserRoute)
-app.use('/api',userReviewRoute)
+app.use('/api/auth',authRoute)
+app.use('/api/products',productRoute)
+app.use('/api/admin',adminUserRoute)
+app.use('/api/reviews',userReviewRoute)
+app.use('/api/profile',profileRoute)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
