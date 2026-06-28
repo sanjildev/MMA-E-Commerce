@@ -49,7 +49,7 @@ res.status(200).json({
 
 exports.getMyReviews=async(req,res)=>{
  const userId=req.user.id
- const reviews=await Review.find({userId}) 
+ const reviews=await Review.find({userId}).populate('userId') 
  if(reviews.length==0){
     res.status(400).json({
         message:"You havent given review to any products yet",
@@ -68,9 +68,9 @@ exports.deleteReview=async(req,res)=>{
     // check if that user created this review
 
     const userId=req.user.id
-    const review=Review.findById(reviewId)
+    const review=await Review.findById(reviewId)
     const ownerIdOfReview=review.userId
-    if(ownerIdOfReview !== userid){
+    if(ownerIdOfReview.toString() !== userId){
        return res.status(400).json({
          message:"you dont have permission to delete this review"   
         })
@@ -82,6 +82,6 @@ exports.deleteReview=async(req,res)=>{
     }
     await Review.findByIdAndDelete(reviewId)
     res.status(200).json({
-        messgae:"Review deleted successfully!!"
+        message:"Review deleted successfully!!"
     })
 }

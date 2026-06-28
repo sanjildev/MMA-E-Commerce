@@ -100,7 +100,7 @@ productName,productDescription,productPrice,productStatus,productStockQty,produc
     new:true
 })
 res.status(200).json({
-    message:"Product updted successfully !!",
+    message:"Product updated successfully !!",
     data:updatedProduct
 })
 }

@@ -16,11 +16,6 @@ exports.getMyProfile=async(req,res)=>{
 }
 
 
-
-
-
-
-
 //update my profile controller
 
 exports.updateMyProfile=async(req,res)=>{
@@ -39,9 +34,6 @@ exports.updateMyProfile=async(req,res)=>{
 }
 
 
-
-
-
 //delete my profile
 
 exports.deleteMyProfile=async(req,res)=>{
@@ -52,7 +44,6 @@ exports.deleteMyProfile=async(req,res)=>{
         data:null
     })
 }
-
 
 
 //update my password
@@ -91,6 +82,6 @@ exports.updateMyPassword=async(req,res)=>{
     await userData.save()
     res.status(200).json({
         message:"Password Changed Succesfully!!",
-        
+
     })
 }
