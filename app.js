@@ -9,6 +9,7 @@ const adminUserRoute = require("./routes/admin/adminUsersRoute");
 const userReviewRoute = require("./routes/user/userReviewRoute");
 const profileRoute = require("./routes/user/profileRoute");
 const cartRoute = require("./routes/user/cartRoute");
+const orderRoute = require("./routes/user/orderRoute");
 
 //tell node to use dotenv
 env.config();
@@ -35,7 +36,7 @@ app.use('/api/admin',adminUserRoute)
 app.use('/api/reviews',userReviewRoute)
 app.use('/api/profile',profileRoute)
 app.use('/api/cart',cartRoute)
-
+app.use('/api/order',orderRoute)
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
